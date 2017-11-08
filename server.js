@@ -32,7 +32,7 @@ io.on('connection', (socketio) => {
     console.log('A user connected ' + socketio.id)
     socketio.on('SEND_MESSAGE', (data) => {
 		Message.create(data, (err, message) => {
-			console.log(message)
+			console.log('this is the message', message)
 			io.emit('RECEIVE_MESSAGE', message)
 		})
 	})

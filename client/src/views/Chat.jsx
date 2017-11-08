@@ -6,7 +6,7 @@ class Chat extends Component {
         super(props)
         this.state = {
             newMessage: {
-                sender: props.currentUser._id,
+                sender: props.currentUser.name, 
                 body: '',
             },
             messages: []
@@ -48,7 +48,7 @@ class Chat extends Component {
     onFormSubmit(evt) {
         evt.preventDefault()
         this.socketio.emit('SEND_MESSAGE', this.state.newMessage)
-        this.setState({newMessage: {sender: this.props.currentUser._id, body: ''} })
+        this.setState({newMessage: {sender: this.props.currentUser.name, body: ''} })
     }
     
     render(){

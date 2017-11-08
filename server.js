@@ -10,7 +10,8 @@ const
 	http = require('http'),
     httpServer = http.Server(app),
     socketio = require('socket.io'),
-    io = socketio(httpServer),
+	io = socketio(httpServer),
+	Message = require('./models/Message'),
 	usersRoutes = require('./routes/users.js')
 
 mongoose.connect(MONGODB_URI, (err) => {
@@ -30,8 +31,17 @@ app.use('/api/users', usersRoutes)
 io.on('connection', (socketio) => {
     console.log('A user connected ' + socketio.id)
     socketio.on('SEND_MESSAGE', (data) => {
-        io.emit('RECEIVE_MESSAGE', data)
-    })
+		Message.create(data, (err, message) => {
+			console.log(message)
+			io.emit('RECEIVE_MESSAGE', message)
+		})
+	})
+	
+	socketio.on('FETCH_MESSAGES', () => {
+		Message.find({}, (err, messages) => {
+			socketio.emit('RECENT_MESSAGES_RECEIVED', messages)
+		})
+	})
 })
 
 app.use('*', (req, res) => {

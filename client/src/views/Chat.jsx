@@ -5,8 +5,10 @@ class Chat extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: props.currentUser.name,
-            message: '',
+            newMessage: {
+                sender: props.currentUser._id,
+                body: '',
+            },
             messages: []
         }
     }
@@ -16,6 +18,10 @@ class Chat extends Component {
         this.socketio = io();
         this.socketio.on('RECEIVE_MESSAGE', (data) => {
             this.addMessage(data)
+        })
+        this.socketio.emit('FETCH_MESSAGES')
+        this.socketio.on('RECENT_MESSAGES_RECEIVED', (recentMessages) => {
+            this.setState({ messages: recentMessages })
         })
     }
 
@@ -32,18 +38,17 @@ class Chat extends Component {
 
     onInputChange(evt) {
         this.setState({
-            ...this.state,
-            [evt.target.name]: evt.target.value
+            newMessage: {
+                ...this.state.newMessage,
+                [evt.target.name]: evt.target.value
+            }
         })
     }
 
     onFormSubmit(evt) {
         evt.preventDefault()
-        this.socketio.emit('SEND_MESSAGE', {
-            name: this.state.name,
-            message: this.state.message
-        })
-        this.setState({message: ''})
+        this.socketio.emit('SEND_MESSAGE', this.state.newMessage)
+        this.setState({newMessage: {sender: this.props.currentUser._id, body: ''} })
     }
     
     render(){
@@ -53,12 +58,12 @@ class Chat extends Component {
                 <div className="messages">
                     {this.state.messages.map((message, index) => {
                         return (
-                            <div key={index}>{message.name}: {message.message}</div>
+                            <div key={index}>{message.sender}: {message.body}</div>
                         )
                     })}
                 </div>
                 <form onChange={this.onInputChange.bind(this)} onSubmit={this.onFormSubmit.bind(this)}>
-                    <input type="text" placeholder="Message" name="message" value={this.state.message}/>
+                    <input type="text" placeholder="Message" name="body" value={this.state.newMessage.body}/>
                     <button>Send</button>
                 </form>
             </div>

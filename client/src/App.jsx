@@ -30,9 +30,9 @@ class App extends React.Component {
 		const { currentUser } = this.state
 		return (
 			<div className='App'>
-
+				
 				<NavBar currentUser={currentUser} />
-
+				
 				<Switch>
 
 					<Route path="/login" render={(props) => {

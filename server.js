@@ -12,6 +12,7 @@ const
     socketio = require('socket.io'),
 	io = socketio(httpServer),
 	Message = require('./models/Message'),
+	apiai = require('apiai')('f369e55e5ce242a6895d86efcc498b9b'),
 	usersRoutes = require('./routes/users.js')
 
 mongoose.connect(MONGODB_URI, (err) => {
@@ -30,7 +31,19 @@ app.use('/api/users', usersRoutes)
 
 io.on('connection', (socketio) => {
     console.log('A user connected ' + socketio.id)
-    socketio.on('SEND_MESSAGE', (data) => {
+	socketio.on('SEND_MESSAGE', (data) => {
+		console.log(data)
+		let apiaiReq = apiai.textRequest(data.body, {sessionId: 'ef9a9d2e1cd141f7b9d72c75d6924852'})
+		apiaiReq.on('response', (botResponse) => {
+			console.log(botResponse.result.fulfillment.speech)
+			data.body = botResponse.result.fulfillment.speech
+			io.emit('RECEIVE_MESSAGE', data)
+		})
+		apiaiReq.on('error', (error) => {
+			console.log(error)
+		})
+		apiaiReq.end()
+	
 		Message.create(data, (err, message) => {
 			console.log('this is the message', message)
 			io.emit('RECEIVE_MESSAGE', message)

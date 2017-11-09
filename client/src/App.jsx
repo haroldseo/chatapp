@@ -8,7 +8,7 @@ import LogOut from './views/LogOut'
 import SignUp from './views/SignUp'
 import VIP from './views/VIP'
 import Home from './views/Home'
-import Chat from './views/Chat'
+import GlobalChat from './views/GlobalChat'
 
 class App extends React.Component {
 	state = { currentUser: clientAuth.getCurrentUser() }
@@ -56,7 +56,7 @@ class App extends React.Component {
 
 					<Route path="/chat" render={() => {
 						return currentUser
-							? <Chat currentUser={currentUser}/>
+							? <GlobalChat currentUser={currentUser}/>
 							: <Redirect to="/login" />
 					}} />
 

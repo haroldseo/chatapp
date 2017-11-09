@@ -10,7 +10,7 @@ const NavBar = (props) => {
 					<span>
 						<Link to="/">{props.currentUser.name}</Link>
 						<Link to="/vip">VIP</Link>
-						<Link to="/chat">Chat</Link>
+						<Link to="/chat">GChat</Link>
 						<Link to="/logout">Log Out</Link>
 					</span>
 				)

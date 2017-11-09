@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 
-class Chat extends Component {
+class GlobalChat extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -71,4 +71,4 @@ class Chat extends Component {
     }
 }
 
-export default Chat;
+export default GlobalChat;

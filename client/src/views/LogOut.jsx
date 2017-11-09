@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 
-class LogOut extends React.Component {
+class LogOut extends Component {
 
 	componentDidMount() {
 		this.props.onLogOut()

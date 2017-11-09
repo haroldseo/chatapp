@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react';
 import clientAuth from '../clientAuth'
 
-// sign up form behaves almost identically to log in form. We could create a flexible Form component to use for both actions, but for now we'll separate the two:
-class SignUp extends React.Component {
+class SignUp extends Component {
 	state = {
 		fields: { name: '', email: '', password: ''}
 	}
@@ -32,11 +31,18 @@ class SignUp extends React.Component {
 		return (
 			<div className='SignUp'>
 				<h1>Sign Up</h1>
+				<br/>
 				<form onChange={this.onInputChange.bind(this)} onSubmit={this.onFormSubmit.bind(this)}>
-					<input type="text" placeholder="Name" name="name" value={name} />
-					<input type="text" placeholder="Email" name="email" value={email} />
-					<input type="password" placeholder="Password" name="password" value={password} />
-					<button>Sign Up</button>
+					<div class="form-group">
+						<input type="text" className="form-control" placeholder="Name" name="name" value={name} />
+					</div>
+					<div class="form-group">					
+						<input type="text" className="form-control" placeholder="Email" name="email" value={email} />
+					</div>
+					<div class="form-group">
+						<input type="password" className="form-control" placeholder="Password" name="password" value={password} />
+					</div>
+					<button className="btn btn-primary">Sign Up</button>
 				</form>
 			</div>
 		)

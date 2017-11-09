@@ -12,7 +12,7 @@ const
     socketio = require('socket.io'),
 	io = socketio(httpServer),
 	Message = require('./models/Message'),
-	apiai = require('apiai')('f369e55e5ce242a6895d86efcc498b9b'),
+	apiai = require('apiai')(process.env.APIAI_TOKEN),
 	usersRoutes = require('./routes/users.js')
 
 mongoose.connect(MONGODB_URI, (err) => {
@@ -29,30 +29,52 @@ app.get('/api', (req, res) => {
 
 app.use('/api/users', usersRoutes)
 
+app.get('/users', (req, res) => {
+	User.find({}, (err, users) => {
+		res.json(users)
+	})
+})
+
 io.on('connection', (socketio) => {
-    console.log('A user connected ' + socketio.id)
+	console.log('A user connected ' + socketio.id)
+	
+	socketio.on('CONNECT_TO_ROOM', (roomId) => {
+		socketio.join(roomId)
+		Message.find({room: roomId}).populate('sender').exec((err, messages) => {
+			io.to(roomId).emit('ROOM_MESSAGES_RECEIVED', messages)
+		})
+	})
+
+	socketio.on('LEAVE_ROOM', (roomId) => {
+		socketio.leave(roomId)
+	})
+
 	socketio.on('SEND_MESSAGE', (data) => {
 		console.log(data)
-		let apiaiReq = apiai.textRequest(data.body, {sessionId: 'ef9a9d2e1cd141f7b9d72c75d6924852'})
-		apiaiReq.on('response', (botResponse) => {
-			console.log(botResponse.result.fulfillment.speech)
-			data.body = botResponse.result.fulfillment.speech
-			io.emit('RECEIVE_MESSAGE', data)
-		})
-		apiaiReq.on('error', (error) => {
-			console.log(error)
-		})
-		apiaiReq.end()
+		// CHAT BOT RESPONSE:
+		// console.log(data)
+		// let apiaiReq = apiai.textRequest(data.body, {sessionId: process.env.APIAI_SESSION_ID})
+		// apiaiReq.on('response', (botResponse) => {
+		// 	console.log(botResponse.result.fulfillment.speech)
+		// 	data.body = botResponse.result.fulfillment.speech
+		// 	io.emit('RECEIVE_MESSAGE', data)
+		// })
+		// apiaiReq.on('error', (error) => {
+		// 	console.log(error)
+		// })
+		// apiaiReq.end()
 	
 		Message.create(data, (err, message) => {
-			console.log('this is the message', message)
-			io.emit('RECEIVE_MESSAGE', message)
+			messageData = {...message.toObject(), sender: data.sender}
+			if(message.room) io.to(message.room).emit('RECEIVE_MESSAGE', messageData)
+			else io.to('global').emit('RECEIVE_MESSAGE', messageData)
+			
 		})
 	})
 	
 	socketio.on('FETCH_MESSAGES', () => {
-		Message.find({}, (err, messages) => {
-			socketio.emit('RECENT_MESSAGES_RECEIVED', messages)
+		Message.find({room: 'global'}).populate('sender').exec((err, messages) => {
+			io.to('global').emit('RECENT_MESSAGES_RECEIVED', messages)
 		})
 	})
 })

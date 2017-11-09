@@ -1,5 +1,9 @@
 body {
 	padding: 20px;
+	color: #4d585f;
+    font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	font-weight: 300;
+	font-size: 18px;
 }
 
 a, button {
@@ -7,6 +11,28 @@ a, button {
 	cursor: pointer;
 }
 
-.NavBar {
-	margin-bottom: 20px
+.nav-link {
+margin-left: 5px;
+margin-right: 5px;
+}
+
+.global-chatroom {
+	text-align: center;
+}
+
+.messages {
+	height: 450px;
+	width: auto;
+	margin: auto;
+	overflow: auto;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 7px;
+	border-color: #e2e3e4;
+	padding: 6px 20px
+}
+
+.btn.btn-primary {
+	margin-left: 0;
+	margin-right: 0;
 }

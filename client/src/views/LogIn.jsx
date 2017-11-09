@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react';
 import clientAuth from '../clientAuth'
 
-class LogIn extends React.Component {
+class LogIn extends Component {
 	state = {
 		fields: { email: '', password: ''}
 	}
@@ -21,7 +21,7 @@ class LogIn extends React.Component {
 			this.setState({ fields: { email: '', password: '' } })
 			if(user) {
 				this.props.onLoginSuccess(user)
-				this.props.history.push('/chat')
+				this.props.history.push('/')
 			}
 		})
 	}
@@ -31,10 +31,15 @@ class LogIn extends React.Component {
 		return (
 			<div className='LogIn'>
 				<h1>Log In</h1>
+				<br/>
 				<form onChange={this.onInputChange.bind(this)} onSubmit={this.onFormSubmit.bind(this)}>
-					<input type="text" placeholder="Email" name="email" value={email} />
-					<input type="password" placeholder="Password" name="password" value={password} />
-					<button>Log In</button>
+					<div class="form-group">
+						<input type="text" className="form-control" placeholder="Email" name="email" value={email} />
+					</div>
+					<div class="form-group">
+						<input type="password" className="form-control" placeholder="Password" name="password" value={password} />
+					</div>
+					<button className="btn btn-primary">Log In</button>
 				</form>
 			</div>
 		)

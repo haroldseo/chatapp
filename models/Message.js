@@ -1,7 +1,8 @@
 const
     mongoose = require('mongoose'),
     messageSchema = new mongoose.Schema({
-        sender: {type: String, require: true},
+        sender: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        room: {type: String, default: 'global'},
         body: {type: String}
     }, {timestamps: true})
 

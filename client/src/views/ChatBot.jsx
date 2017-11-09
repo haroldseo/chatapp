@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 
-class GlobalChat extends Component {
+class ChatBot extends Component {
     constructor(props) {
         super(props)
         this.state = {
             newMessage: {
+                room: props.match.params.id,
                 sender: props.currentUser, 
                 body: '',
             },
             messages: []
         }
     }
-    
 
     componentDidMount() {
         this.socketio = io();
-        this.socketio.emit('CONNECT_TO_ROOM', 'global')
+        this.socketio.emit('CONNECT_TO_ROOM', this.props.match.params.id)
         this.socketio.on('RECEIVE_MESSAGE', (data) => {
             this.addMessage(data)
         })
         this.socketio.emit('FETCH_MESSAGES')
-        this.socketio.on('RECENT_MESSAGES_RECEIVED', (recentMessages) => {
-            console.log("getting recent messages")
+        this.socketio.on('ROOM_MESSAGES_RECEIVED', (recentMessages) => {
             this.setState({ messages: recentMessages })
             this.scrollToBottom();
         })
@@ -30,7 +29,7 @@ class GlobalChat extends Component {
 
     componentWillUnmount() {
         // disconnect from socket.io when leaving the chat window
-        this.socketio.emit('LEAVE_ROOM', 'global')
+        this.socketio.emit('LEAVE_ROOM', this.props.match.params.id)
         this.socketio.disconnect()
     }
 
@@ -53,7 +52,11 @@ class GlobalChat extends Component {
     onFormSubmit(evt) {
         evt.preventDefault()
         this.socketio.emit('SEND_MESSAGE', this.state.newMessage)
-        this.setState({newMessage: {sender: this.props.currentUser, body: ''} })
+        this.setState({newMessage: {
+            room: this.props.match.params.id,
+            sender: this.props.currentUser,
+            body: ''
+        }})
     }
 
     scrollToBottom() {
@@ -61,10 +64,9 @@ class GlobalChat extends Component {
     }
 
     render(){
-        console.log(this.state.messages)
         return (
             <div>
-                <h3 className="global-chatroom">Global Chat</h3>
+                <h3 className="global-chatroom">{this.state.newMessage.sender.name}'s Chat Room</h3>
                 <div className="messages">
                     {this.state.messages.map((message, index) => {
                         return (
@@ -90,4 +92,4 @@ class GlobalChat extends Component {
     }
 }
 
-export default GlobalChat;
+export default ChatBot;

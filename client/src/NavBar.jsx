@@ -1,28 +1,68 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
-const NavBar = (props) => {
-	return (
-		<div className='NavBar'>
-			<Link to="/">Home</Link>
-			{props.currentUser
-				? (
-					<span>
-						<Link to="/">{props.currentUser.name}</Link>
-						<Link to="/vip">VIP</Link>
-						<Link to="/chat">GChat</Link>
-						<Link to="/logout">Log Out</Link>
-					</span>
-				)
-				: (
-					<span>
-						<Link to="/login">Log In</Link>
-						<Link to="/signup">Sign Up</Link>
-					</span>
-				)
-			}
-		</div>
-	)
+class NavBar extends Component {
+	state = {
+		menuOpen: false
+	}
+
+	toggleMenu() {
+		this.setState({menuOpen: !this.state.menuOpen})
+	}
+
+	render() {
+		const {currentUser} = this.props
+		return (
+			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+				<div className='NavBar'>
+				<button onClick={ this.toggleMenu.bind(this)} className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span className="navbar-toggler-icon"></span>
+				</button>
+
+				<div  className={`collapse navbar-collapse  ${this.state.menuOpen ? 'show' : '' }`} id="navbarNavAltMarkup">
+					{currentUser
+						? (
+							<span>
+								<ul className="navbar-nav mr-auto">
+									<li className="nav-item active">
+										<Link to="/" className="navbar-brand">Home</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to="/users" className="nav-link">Users</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to="/chat" className="nav-link">GChat</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to={`/chat/${currentUser._id}`} className="nav-link">{currentUser.name}</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to="/logout" className="nav-link">Log Out</Link>
+									</li>
+								</ul>
+							</span>
+						)
+						: (
+							<span>
+								<ul className="navbar-nav mr-auto">
+									<li className="nav-item active">
+										<Link to="/" className="navbar-brand">Home</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to="/login" className="nav-link">Log In</Link>
+									</li>
+									<li className="nav-item active">
+										<Link to="/signup" className="nav-link">Sign Up</Link>
+									</li>
+								</ul>
+							</span>
+						)
+					}
+				</div>
+				</div>
+			</nav>
+		)
+	}
 }
 
 export default NavBar

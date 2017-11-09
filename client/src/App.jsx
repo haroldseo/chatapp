@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import clientAuth from './clientAuth'
 
@@ -6,11 +6,12 @@ import NavBar from './NavBar'
 import LogIn from './views/LogIn'
 import LogOut from './views/LogOut'
 import SignUp from './views/SignUp'
-import VIP from './views/VIP'
+import Users from './views/Users'
 import Home from './views/Home'
+import ChatRoom from './views/ChatRoom'
 import GlobalChat from './views/GlobalChat'
 
-class App extends React.Component {
+class App extends Component {
 	state = { currentUser: clientAuth.getCurrentUser() }
 
 	componentDidMount() {
@@ -32,7 +33,7 @@ class App extends React.Component {
 			<div className='App'>
 				
 				<NavBar currentUser={currentUser} />
-				
+				<br/>
 				<Switch>
 
 					<Route path="/login" render={(props) => {
@@ -43,23 +44,28 @@ class App extends React.Component {
 						return <LogOut onLogOut={this.logOut.bind(this)} />
 					}} />
 
-					{/* the sign up component takes an 'onSignUpSuccess' prop which will perform the same thing as onLoginSuccess: set the state to contain the currentUser */}
 					<Route path="/signup" render={(props) => {
 						return <SignUp {...props} onSignUpSuccess={this.onLoginSuccess.bind(this)} />
 					}} />
 
-					<Route path="/vip" render={() => {
+					<Route path="/users" render={(props) => {
 						return currentUser
-							? <VIP />
+							? <Users {...props} currentUser={currentUser} />
 							: <Redirect to="/login" />
 					}} />
 
-					<Route path="/chat" render={() => {
+					<Route path="/chat/:id" render={(props) => {
+						return currentUser
+							? <ChatRoom {...props} currentUser={currentUser}/>
+							: <Redirect to="/login" />
+					}} />
+
+					<Route exact path="/chat" render={() => {
 						return currentUser
 							? <GlobalChat currentUser={currentUser}/>
 							: <Redirect to="/login" />
 					}} />
-
+					
 					<Route path="/" component={Home} />
 
 				</Switch>

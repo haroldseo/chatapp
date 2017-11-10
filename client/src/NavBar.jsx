@@ -34,6 +34,9 @@ class NavBar extends Component {
 										<Link to="/chat" className="nav-link">GChat</Link>
 									</li>
 									<li className="nav-item active">
+										<Link to="/chatbot" className="nav-link">ChatBot</Link>
+									</li>
+									<li className="nav-item active">
 										<Link to={`/chat/${currentUser._id}`} className="nav-link">{currentUser.name}</Link>
 									</li>
 									<li className="nav-item active">

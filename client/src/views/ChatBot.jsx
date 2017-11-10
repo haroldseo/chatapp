@@ -6,7 +6,7 @@ class ChatBot extends Component {
         super(props)
         this.state = {
             newMessage: {
-                room: props.match.params.id,
+                room: 'bot-room',
                 sender: props.currentUser, 
                 body: '',
             },
@@ -16,20 +16,15 @@ class ChatBot extends Component {
 
     componentDidMount() {
         this.socketio = io();
-        this.socketio.emit('CONNECT_TO_ROOM', this.props.match.params.id)
+        this.socketio.emit('CONNECT_TO_BOT_ROOM', this.state.newMessage.room)
         this.socketio.on('RECEIVE_MESSAGE', (data) => {
             this.addMessage(data)
-        })
-        this.socketio.emit('FETCH_MESSAGES')
-        this.socketio.on('ROOM_MESSAGES_RECEIVED', (recentMessages) => {
-            this.setState({ messages: recentMessages })
-            this.scrollToBottom();
         })
     }
 
     componentWillUnmount() {
         // disconnect from socket.io when leaving the chat window
-        this.socketio.emit('LEAVE_ROOM', this.props.match.params.id)
+        this.socketio.emit('LEAVE_BOT_ROOM', this.state.newMessage.room)
         this.socketio.disconnect()
     }
 
@@ -53,7 +48,7 @@ class ChatBot extends Component {
         evt.preventDefault()
         this.socketio.emit('SEND_MESSAGE', this.state.newMessage)
         this.setState({newMessage: {
-            room: this.props.match.params.id,
+            room: 'bot-room',
             sender: this.props.currentUser,
             body: ''
         }})
@@ -65,12 +60,14 @@ class ChatBot extends Component {
 
     render(){
         return (
-            <div>
-                <h3 className="global-chatroom">{this.state.newMessage.sender.name}'s Chat Room</h3>
+            <div className="chat-container">
+                <h3 className="bot-chatroom">Bot's Chat Room</h3>
                 <div className="messages">
                     {this.state.messages.map((message, index) => {
                         return (
-                            <div key={index}>{message.sender.name}: {message.body}</div>
+                            <div id="chat-messages">
+                                <div key={index} id="chat-messages-content"><span id="content"><span id="sender">{message.sender.name}</span>: {message.body}</span></div>
+                            </div>
                         )
                     })}
                     <div ref={(el) => {this.messagesEnd = el}}>

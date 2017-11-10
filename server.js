@@ -49,23 +49,26 @@ io.on('connection', (socketio) => {
 		socketio.leave(roomId)
 	})
 
+	socketio.on('CONNECT_TO_BOT_ROOM', (botRoom) => {
+		socketio.join(botRoom)
+	})
+
 	socketio.on('SEND_MESSAGE', (data) => {
-		console.log(data)
 		// CHAT BOT RESPONSE:
-		// console.log(data)
-		// let apiaiReq = apiai.textRequest(data.body, {sessionId: process.env.APIAI_SESSION_ID})
-		// apiaiReq.on('response', (botResponse) => {
-		// 	console.log(botResponse.result.fulfillment.speech)
-		// 	data.body = botResponse.result.fulfillment.speech
-		// 	io.emit('RECEIVE_MESSAGE', data)
-		// })
-		// apiaiReq.on('error', (error) => {
-		// 	console.log(error)
-		// })
-		// apiaiReq.end()
+		let apiaiReq = apiai.textRequest(data.body, {sessionId: process.env.APIAI_SESSION_ID})
+		apiaiReq.on('response', (botResponse) => {
+			console.log(botResponse.result.fulfillment.speech)
+			data.body = botResponse.result.fulfillment.speech
+
+			const chatBotReply = {body: botResponse.result.fulfillment.speech, sender: {name: "Jimi-5000"}}
+			if(data.room == 'bot-room') io.emit('RECEIVE_MESSAGE', chatBotReply)
+		})
+		apiaiReq.on('error', (error) => {
+			console.log(error)
+		})
+		apiaiReq.end()
 	
 		Message.create(data, (err, message) => {
-			// messageData = {...message.toObject(), sender: data.sender}
 			message.populate('sender', (err) => {
 				if(message.room) io.to(message.room).emit('RECEIVE_MESSAGE', message)
 				else io.to('global').emit('RECEIVE_MESSAGE', message)

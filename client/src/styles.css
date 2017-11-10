@@ -12,24 +12,57 @@ a, button {
 }
 
 .nav-link {
-margin-left: 5px;
-margin-right: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
-.global-chatroom {
+.global-chatroom, .bot-chatroom, .chatroom {
 	text-align: center;
+}
+
+#chat-messages {
+	display: block;
+	margin-top: 7px;
+}
+
+#chat-messages-content {
+	border: 1px solid #e2e3e4;
+	border-radius: 15px;
+	display: inline-block;
+	background-color: #f8f9fa;
+}
+
+#content {
+	padding: 7px 13px;
+}
+
+#sender {
+	font-weight: 500;
+}
+
+.chat-container {
+	width: auto;
+	margin: auto;
 }
 
 .messages {
 	height: 450px;
 	width: auto;
-	margin: auto;
+	margin: 0 50px;
 	overflow: auto;
 	border-style: solid;
 	border-width: 1px;
 	border-radius: 7px;
-	border-color: #e2e3e4;
-	padding: 6px 20px
+	border-color: #bdbebe;
+	padding: 6px 20px;
+}
+
+.input-group {
+	margin: 0 50px;
+}
+
+.input-group-btn {
+	margin: 0 100px 0 0;
 }
 
 .btn.btn-primary {

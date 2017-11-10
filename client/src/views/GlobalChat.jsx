@@ -63,12 +63,14 @@ class GlobalChat extends Component {
     render(){
         console.log(this.state.messages)
         return (
-            <div>
+            <div className="chat-container">
                 <h3 className="global-chatroom">Global Chat</h3>
                 <div className="messages">
                     {this.state.messages.map((message, index) => {
                         return (
-                            <div key={index}>{message.sender.name}: {message.body}</div>
+                            <div id="chat-messages">
+                                <div key={index} id="chat-messages-content"><span id="content"><span id="sender">{message.sender.name}</span>: {message.body}</span></div>
+                            </div>
                         )
                     })}
                     <div ref={(el) => {this.messagesEnd = el}}>

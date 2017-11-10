@@ -10,6 +10,7 @@ import Users from './views/Users'
 import Home from './views/Home'
 import ChatRoom from './views/ChatRoom'
 import GlobalChat from './views/GlobalChat'
+import ChatBot from './views/ChatBot'
 
 class App extends Component {
 	state = { currentUser: clientAuth.getCurrentUser() }
@@ -63,6 +64,12 @@ class App extends Component {
 					<Route exact path="/chat" render={() => {
 						return currentUser
 							? <GlobalChat currentUser={currentUser}/>
+							: <Redirect to="/login" />
+					}} />
+
+					<Route exact path="/chatbot" render={() => {
+						return currentUser
+							? <ChatBot currentUser={currentUser}/>
 							: <Redirect to="/login" />
 					}} />
 					

@@ -1,6 +1,6 @@
 # ChatApp
 
-![](/Screenshots/ChatAppScreenshot.png)
+![](/images/ChatAppScreenshot.png)
 
 This app allows you to chat with other users, both globally and privately.
 
@@ -33,9 +33,10 @@ ChatApp was built using the following technologies:
 
 ## Wireframes and ERD
 
-![](/Screenshots/UsersSS.png)
-![](/Screenshots/GlobalSS.png)
-![](/Screenshots/ChatBotSS.png)
+![](/images/UsersSS.png)
+![](/images/GlobalSS.png)
+![](/images/ChatBotSS.png)
+![](/images/ERDSS.png)
 
 ## Unsolved Problems and Future Features
 

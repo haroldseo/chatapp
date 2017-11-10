@@ -50,7 +50,7 @@ class NavBar extends Component {
 							<span>
 								<ul className="navbar-nav mr-auto">
 									<li className="nav-item active">
-										<Link to="/" className="navbar-brand">Home</Link>
+										<Link to="/" className="navbar-brand"><img src={Logo} width="60" height="60" alt=""/></Link>
 									</li>
 									<li className="nav-item active">
 										<Link to="/login" className="nav-link">Log In</Link>

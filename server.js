@@ -65,9 +65,11 @@ io.on('connection', (socketio) => {
 		// apiaiReq.end()
 	
 		Message.create(data, (err, message) => {
-			messageData = {...message.toObject(), sender: data.sender}
-			if(message.room) io.to(message.room).emit('RECEIVE_MESSAGE', messageData)
-			else io.to('global').emit('RECEIVE_MESSAGE', messageData)
+			// messageData = {...message.toObject(), sender: data.sender}
+			message.populate('sender', (err) => {
+				if(message.room) io.to(message.room).emit('RECEIVE_MESSAGE', message)
+				else io.to('global').emit('RECEIVE_MESSAGE', message)
+			})
 			
 		})
 	})

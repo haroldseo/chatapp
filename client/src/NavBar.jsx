@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Logo from './Logo.png'
 
 class NavBar extends Component {
 	state = {
@@ -19,13 +20,13 @@ class NavBar extends Component {
 					<span className="navbar-toggler-icon"></span>
 				</button>
 
-				<div  className={`collapse navbar-collapse  ${this.state.menuOpen ? 'show' : '' }`} id="navbarNavAltMarkup">
+				<div className={`collapse navbar-collapse  ${this.state.menuOpen ? 'show' : '' }`} id="navbarNavAltMarkup">
 					{currentUser
 						? (
 							<span>
 								<ul className="navbar-nav mr-auto">
 									<li className="nav-item active">
-										<Link to="/" className="navbar-brand">Home</Link>
+										<Link to="/" className="navbar-brand"><img src={Logo} width="60" height="60" alt=""/></Link>
 									</li>
 									<li className="nav-item active">
 										<Link to="/users" className="nav-link">Users</Link>

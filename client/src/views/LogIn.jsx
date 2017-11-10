@@ -21,7 +21,7 @@ class LogIn extends Component {
 			this.setState({ fields: { email: '', password: '' } })
 			if(user) {
 				this.props.onLoginSuccess(user)
-				this.props.history.push('/')
+				this.props.history.push('/chat')
 			}
 		})
 	}

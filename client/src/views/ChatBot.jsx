@@ -64,10 +64,13 @@ class ChatBot extends Component {
                 <h3 className="bot-chatroom">Bot's Chat Room</h3>
                 <div className="messages">
                     {this.state.messages.map((message, index) => {
-                        return (
-                            <div id="chat-messages">
-                                <div key={index} id="chat-messages-content"><span id="content"><span id="sender">{message.sender.name}</span>: {message.body}</span></div>
-                            </div>
+                        return (this.props.currentUser._id === message.sender._id
+                            ?   (<div id="chat-messages" className="my-message">
+                                    <div key={index} id="chat-messages-content"><span id="content"><span id="sender">{message.sender.name}</span>: {message.body}</span></div>
+                                </div>)
+                            :   (<div id="chat-messages">
+                                    <div key={index} id="chat-messages-content"><span id="content"><span id="sender">{message.sender.name}</span>: {message.body}</span></div>
+                                </div>)
                         )
                     })}
                     <div ref={(el) => {this.messagesEnd = el}}>

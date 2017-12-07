@@ -39,6 +39,10 @@ a, button {
 	margin-top: 7px;
 }
 
+#chat-messages.my-message {
+	text-align: right;
+}
+
 #chat-messages-content {
 	border: 1px solid #e2e3e4;
 	border-radius: 15px;

@@ -20,6 +20,6 @@
     "mongoose": "4.10.8",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.5",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.5.0"
   }
 }
